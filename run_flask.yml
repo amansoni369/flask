@@ -11,7 +11,7 @@
       become: yes
 
     - name: check if container exist or not
-      command: docker ps -f name=my_container1
+      command: docker ps -f name=my_container
       register: result
 
     - name: debug result
