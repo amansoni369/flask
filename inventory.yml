@@ -2,5 +2,5 @@
 all:
   hosts:
     ec2:
-      ansible_host: 13.239.38.140
+      ansible_host: 13.211.130.24
       ansible_user: ec2-user
