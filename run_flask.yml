@@ -1,7 +1,7 @@
 ---
 - name: testing docker devops flow
   gather_facts: no
-  hosts: localhost
+  hosts: ec2
   tasks:
 
     - name: build a docker imgage
