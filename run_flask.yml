@@ -2,21 +2,23 @@
 - name: testing docker devops flow
   gather_facts: no
   hosts: ec2
+  vars:
+    container_name: "demo_flask_container"
   tasks:
 
-    - name: Copy the contents to ec2 server
+    - name: Copy the contents to ec2 {{ env }} server
       copy:
         src: /var/lib/jenkins/workspace/test_pipeline/
-        dest: /tmp/flask/
+        dest: "/tmp/flask/{{ env }}/"
 
     - name: build a docker imgage
       command: docker build -t my_image:latest .
       args:
-        chdir: /tmp/flask
+        chdir: "/tmp/flask/{{ env }}"
       become: yes
 
     - name: check if container exist or not
-      command: docker ps -f name=my_container
+      command: "docker ps -f name={{ container_name }}"
       register: result
 
     - name: debug result
@@ -25,7 +27,7 @@
 
     - name: debug test
       debug:
-        msg: 'yes'
+        msg: 'The container already exists, hence updating it with new image'
       when:
         - result.stdout_lines|count == 2
 
@@ -33,14 +35,14 @@
       shell: |
          docker stop my_container
          docker rm my_container
-         docker run -d --name "my_container" -p 5000:5000 my_image
+         docker run -d --name "{{ container_name }}" -p 5000:5000 my_image
       become: yes
       when:
         - result.stdout_lines|count == 2
 
     - name: run a new container
       shell: |
-         docker run -d --name "my_container" -p 5001:5000 my_image
+         docker run -d --name "{{ container_name }}" -p 5001:5000 my_image
       become: yes
       when:
         - result.stdout_lines|count == 1
