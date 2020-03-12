@@ -46,3 +46,12 @@
       become: yes
       when:
         - result.stdout_lines|count == 1
+
+    - name: Upload the code to artifactory for further usage
+      uri:
+        url: "https://repo.tc.lab.locl/<<artifactory_where_to_upload>>/"
+        src: "/tmp/flask/{{ env }}"
+        username: asoni
+        password: <<filler>>
+        validate_certs: no
+      register: upload_result
