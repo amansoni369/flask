@@ -7,7 +7,7 @@
     - name: Copy the contents to ec2 server
       copy:
         src: /var/lib/jenkins/workspace/test_pipeline/
-        dest: /temp/flask/
+        dest: /tmp/flask/
 
     - name: build a docker imgage
       command: docker build -t my_image:latest .
