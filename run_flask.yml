@@ -4,8 +4,15 @@
   hosts: ec2
   tasks:
 
+    - name: Copy the contents to ec2 server
+      copy:
+        src: /var/lib/jenkins/workspace/test_pipeline/
+        dest: /temp/flask/
+
     - name: build a docker imgage
       command: docker build -t my_image:latest .
+      args:
+        chdir: /tmp/flask
       become: yes
 
     - name: check if container exist or not
