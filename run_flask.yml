@@ -6,8 +6,6 @@
 
     - name: build a docker imgage
       command: docker build -t my_image:latest .
-      args:
-        chdir: flask_app/
       become: yes
 
     - name: check if container exist or not
